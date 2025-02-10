@@ -5,9 +5,17 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
-const Buffer = require("buffer").Buffer;
 
+// Public CORS settings
+const corsOptions = {
+  origin: "*", // Allow all origins (public access)
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: false // Change to true if authentication is needed
+};
+app.use(cors(corsOptions));
+
+const Buffer = require("buffer").Buffer;
 const decodeBase64 = (encoded) => Buffer.from(encoded, "base64").toString("utf-8");
 
 const pool = mysql.createPool({
