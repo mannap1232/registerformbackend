@@ -53,6 +53,15 @@ pool.getConnection((err, connection) => {
 });
 
 const promisePool = pool.promise();
+app.get("/api/healthcheck", async (req, res) => {
+  try {
+    await promisePool.query("SELECT 1");
+    res.status(200).json({ status: "healthy" });
+  } catch (error) {
+    console.error("Health check failed:", error);
+    res.status(500).json({ status: "unhealthy", error: error.message });
+  }
+});
 
 const createUsersTable = async () => {
   const createTableQuery = `
